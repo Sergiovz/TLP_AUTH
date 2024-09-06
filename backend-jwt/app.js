@@ -7,7 +7,7 @@ import cors from "cors";
 import { PORT } from "./src/config/env.js";
 import generarJwt from "./src/helpers/generar-jwt.js";
 import validarJwt from "./src/middlewares/validar-jwt.js";
-import { database } from "./src/db/database.js";
+import { Pool } from "./src/db/database.js";
 import morgan from "morgan";
 import router from "./src/routes/auht.routes.js";
 
