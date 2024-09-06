@@ -2,10 +2,14 @@ import { Router } from "express";
 import {
   loginController,
   logoutController,
+  Ping,
   sessionController,
-} from "../controllers/session.controller";
+} from "../controllers/session.controller.js";
 
 const router = Router();
+
+// Ruta para verificar que el servidor está corriendo
+router.get("/ping", Ping);
 
 // Ruta para manejar el inicio de sesión
 router.post("/login", loginController);

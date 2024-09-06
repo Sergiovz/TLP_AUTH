@@ -1,4 +1,9 @@
-import { database } from "../../db/database.js";
+import { Pool } from "../../db/database.js";
+
+export const Ping = async (req, res) => {
+  const result = await Pool.query("SELECT 1 + 1 AS result");
+  res.json(result[0]);
+};
 
 export const loginController = (req, res) => {
   const { username, password } = req.body;

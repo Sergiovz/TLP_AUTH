@@ -4,10 +4,13 @@ import session from "express-session";
 import morgan from "morgan";
 import path from "path";
 import router from "./src/routes/session.routes.js";
+import "dotenv/config.js";
+import { Pool } from "./db/database.js";
 
-import { database } from "./db/database.js";
-
+// Inicializamos la aplicación
 const app = express();
+
+// Inicializamos el puerto del servidor
 const PORT = process.env.PORT || 4000;
 
 const __dirname = path.resolve();
@@ -37,8 +40,10 @@ app.use(
   })
 );
 
+// Rutas
 app.use(router);
 
+// Arranque del servidor
 app.listen(PORT, () =>
   console.log(`Server running on http://localhost:${PORT}/`)
 );
