@@ -3,6 +3,8 @@ backend-session/.env.production
 backend-session/.env
 
 backend-jwt/node_modules
+backend-jwt/package-lock.json
+backend-jwt/yarn.lock
 backend-jwt/.env.production
 backend-jwt/.env.development
 backend-jwt/.env
