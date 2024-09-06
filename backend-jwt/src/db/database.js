@@ -1,25 +1,22 @@
-export const database = 
-    {
-        user: [
-            {
-                id: 1,
-                username: 'admin',
-                password: 'admin'
-            },
-            {
-                id: 2,
-                username: 'user',
-                password: 'user'
-            },
-            {
-                id: 3,
-                username: 'guest',
-                password: 'guest'
-            },
-            {
-                id: 4,
-                username: 'guest2',
-                password: 'guest2'
-            }
-        ]
-    }
+import { createPool } from "mysql2/promise";
+import "dotenv/config";
+
+// Conexión a la base de datos
+const connection = async () => {
+  try {
+    const pool = createPool({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+    });
+    console.log("Database connected");
+    return pool;
+  } catch (error) {
+    console.error("Error connecting to the database: ", error);
+  }
+};
+
+const Pool = await connection();
+
+export { Pool };
