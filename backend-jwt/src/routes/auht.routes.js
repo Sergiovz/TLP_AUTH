@@ -14,7 +14,7 @@ const router = Router();
 router.get("/ping", Ping);
 
 // Endpoint de registro (signup)
-router.post("/signup", registerController);
+router.post("/register", registerController);
 
 // Endpoint de inicio de sesión (login)
 router.post("/login", loginController);
