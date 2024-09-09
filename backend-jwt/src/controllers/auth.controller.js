@@ -7,6 +7,39 @@ export const Ping = async (req, res) => {
   res.json(result[0]);
 };
 
+// Controlador de registro
+export const registerController = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Verificar si el usuario ya existe
+    const user = await Pool.query("SELECT * FROM users WHERE username = ?", [
+      username,
+    ]);
+
+    console.log(user);
+
+    if (user[0].length > 0) {
+      return res.status(400).json({ message: "El usuario ya existe" });
+    }
+
+    // Crear un nuevo usuario
+    const [rows] = await Pool.query(
+      "INSERT INTO users (username, password) VALUES (?, ?)",
+      [username, password]
+    );
+
+    return res.status(201).send({
+      id: rows.insertId,
+      username,
+      password,
+    });
+  } catch (err) {
+    console.error("Error en la base de datos: ", err);
+    return res.status(500).json({ message: "Error en la base de datos" });
+  }
+};
+
 // Controlador de inicio de sesión
 export const loginController = async (req, res) => {
   const { username, password } = req.body;
