@@ -4,12 +4,13 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
 
-import { PORT } from "./src/config/env.js";
+import { PORT, SECRET_KEY } from "./src/config/env.js";
 import generarJwt from "./src/helpers/generar-jwt.js";
 import validarJwt from "./src/middlewares/validar-jwt.js";
 import { Pool } from "./src/db/database.js";
 import morgan from "morgan";
 import router from "./src/routes/auht.routes.js";
+import "dotenv/config";
 
 const app = express();
 
@@ -29,10 +30,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   session({
-    secret: "session_secret_key", // Cambia esto por una clave secreta en producción
+    secret: SECRET_KEY, // Cambia esto por una clave secreta en producción
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Usar 'true' si usas HTTPS
+    cookie: { secure: true }, // Usar 'true' si usas HTTPS
   })
 );
 
