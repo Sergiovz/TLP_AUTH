@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { Pool } from "../db/database.js";
 import generarJwt from "../helpers/generar-jwt.js";
 
@@ -23,10 +24,16 @@ export const registerController = async (req, res) => {
       return res.status(400).json({ message: "El usuario ya existe" });
     }
 
-    // Crear un nuevo usuario
+    // Generar un salt
+    const salt = await bcrypt.genSalt(10);
+
+    // Encriptar la contraseña
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Crear un nuevo usuario con la contraseña encriptada
     const [rows] = await Pool.query(
       "INSERT INTO users (username, password) VALUES (?, ?)",
-      [username, password]
+      [username, hashedPassword]
     );
 
     return res.status(201).send({
@@ -46,8 +53,8 @@ export const loginController = async (req, res) => {
 
   try {
     const [rows] = await Pool.query(
-      "SELECT * FROM users WHERE username = ? AND password = ?",
-      [username, password]
+      "SELECT * FROM users WHERE username = ?",
+      [username]
     );
 
     // Validación de usuario
@@ -58,6 +65,15 @@ export const loginController = async (req, res) => {
     }
 
     const user = rows[0];
+
+    // Comparar la contraseña en texto plano con la contraseña encriptada
+    const esCoincidente = await bcrypt.compare(password, user.password);
+
+    if (!esCoincidente) {
+      return res
+        .status(401)
+        .json({ error: "Usuario o contraseña incorrectos" });
+    }
 
     // Generar JWT
     const token = await generarJwt(user);
