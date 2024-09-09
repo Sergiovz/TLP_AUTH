@@ -7,22 +7,27 @@ export const Ping = async (req, res) => {
   res.json(result[0]);
 };
 
-//
+// Controlador de inicio de sesión
 export const loginController = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = database.user.find(
-      (user) => user.username === username && user.password === password
+    const [rows] = await Pool.query(
+      "SELECT * FROM users WHERE username = ? AND password = ?",
+      [username, password]
     );
 
     // Validación de usuario
-    if (!user) {
-      return res.status(401).json({ message: "Credenciales incorrectas" });
+    if (rows.length === 0) {
+      return res
+        .status(401)
+        .json({ error: "Usuario o contraseña incorrectos" });
     }
 
-    // Generar token JWT
-    const token = await generarJwt(user.id);
+    const user = rows[0];
+
+    // Generar JWT
+    const token = await generarJwt(user);
 
     // Almacenar el token en la sesión del servidor
     req.session.token = token;
