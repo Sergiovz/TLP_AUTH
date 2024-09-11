@@ -43,6 +43,20 @@
         integrity='sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy'
         crossorigin='anonymous'></script>
     <script>
+        document.addEventListener('DOMContentLoaded', async() => {
+                    const response = await fetch('http://localhost:4000/session', {
+                    method: 'GET',
+                    credentials: 'include' // Importante para enviar las cookies de sesión
+                })
+
+                console.log({ response })
+
+
+                if (response.ok) {
+                    window.location.href = 'home.html';
+                }
+            });
+
         document.getElementById('login-form').addEventListener('submit', async function (event) {
             event.preventDefault();
 
