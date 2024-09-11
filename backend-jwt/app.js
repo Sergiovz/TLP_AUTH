@@ -1,16 +1,13 @@
 // server.js
-import express from "express";
 import cookieParser from "cookie-parser";
-import session from "express-session";
 import cors from "cors";
+import express from "express";
+import session from "express-session";
 
-import { PORT, SECRET_KEY } from "./src/config/env.js";
-import generarJwt from "./src/helpers/generar-jwt.js";
-import validarJwt from "./src/middlewares/validar-jwt.js";
-import { Pool } from "./src/db/database.js";
-import morgan from "morgan";
-import router from "./src/routes/auht.routes.js";
 import "dotenv/config";
+import morgan from "morgan";
+import { PORT, SECRET_KEY } from "./src/config/env.js";
+import router from "./src/routes/auht.routes.js";
 
 const app = express();
 
